@@ -1,0 +1,11 @@
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
+
+set editing-mode vi
+
+# insert mode: blinking bar cursor
+set vi-ins-mode-string \1\e[5 q\2
+# normal mode: blinking block cursor
+set vi-cmd-mode-string \1\e[1 q\2
+
+set show-mode-in-prompt on
