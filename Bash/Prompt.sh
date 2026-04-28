@@ -158,7 +158,7 @@ create_prompt() {
   right_text="$(right)"
 
   local stripped
-  stripped=$(printf '%s' "$right_text" | sed $'s/\x01//g; s/\x02//g; s\/x1b\\[[0-9;]]*m//g; s/\\\\[][]//g')
+  stripped=$(printf '%s' "$right_text" | sed $'s/\x01//g; s/\x02//g; s/\x1b\\[[0-9;]*m//g; s/\\\\[][]//g')
   local padding=$((COLUMNS - ${#stripped}))
   if ((padding < 0)); then padding=0; fi
 
