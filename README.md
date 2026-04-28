@@ -8,16 +8,22 @@
 PATH=$(PWD)
 ```
 
+#### Vim
+
+``` bash
+ln -s ${PATH}/Vim/.vimrc ~/.vimrc
+```
+
 #### Neovim
 
 ``` bash
-ln -s ${PATH}/init.lua ~/.config/nvim/init.lua
+ln -s ${PATH}/Neovim/init.lua ~/.config/nvim/init.lua
 ```
 
 #### Tmux
 
 ``` bash
-ln -s ${PATH}/tmux.conf ~/.config/tmux/tmux.conf
+ln -s ${PATH}/Tmux/tmux.conf ~/.config/tmux/tmux.conf
 ```
 
 ### Windows
