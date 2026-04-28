@@ -82,9 +82,9 @@ light_cyan_bg="106"
 white_bg="107"
 
 # start / end
-start_start="\033[0;"
-start_end="m"
-end="\033[m"
+start_start="\[\033[0;"
+start_end="m\]"
+end="\[\033[m\]"
 
 # icons
 sep=
@@ -154,31 +154,15 @@ create_prompt() {
 
   timer_stop
 
-  compensate=152
+  local right_text
+  right_text="$(right)"
 
-  git rev-parse --is-inside-work-tree &>/dev/null
-  if [ $? -eq 0 ]; then
+  local stripped
+  stripped=$(printf '%s' "$right_text" | sed $'s/\x01//g; s/\x02//g; s\/x1b\\[[0-9;]]*m//g; s/\\\\[][]//g')
+  local padding=$((COLUMNS - ${#stripped}))
+  if ((padding < 0)); then padding=0; fi
 
-    compensate=$compensate+207
-
-    if [ -d /sys/class/power_supply/BAT0 ]; then
-      compensate=$compensate-32
-    fi
-
-    if [[ $(git status --porcelain) ]]; then
-
-      compensate=$compensate+2
-
-    fi
-  fi
-
-  if [ "$YAZI_LEVEL" != "" ]; then
-
-    compensate=$compensate+206
-
-  fi
-
-  PS1=$(printf "\n%*s\n\n\r%s " "$(($(tput cols) + ${compensate}))" "$(right)" "$(left)")
+  PS1=$(printf "\n%*s%s\n\n\r%s " "$padding" "" "$right_text" "$(left)")
 
 }
 
@@ -228,7 +212,7 @@ right() {
     is_git="${is_git}${start_start}${cyan_fg};${black_bg}${start_end}"
     #
     # check if there are modified files
-    if [[ $(git status --porcelain) ]]; then
+    if ! git diff-files --quiet 2>/dev/null || ! git diff-index --quiet --cached HEAD 2>/dev/null; then
       is_git="${is_git}${icon_plus} ${end}"
     else
       is_git="${is_git} ${end}"
