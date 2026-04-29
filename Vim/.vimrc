@@ -60,3 +60,6 @@ set relativenumber
 
 " make sure guicursor is not cleared
 set guicursor&
+
+" autoscroll
+set scrolloff=999
